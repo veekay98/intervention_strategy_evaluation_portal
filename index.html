@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Intervention Strategy Evaluation Exercise</title>
+<link rel="stylesheet" href="index-styles.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Intervention Strategy Evaluation Exercise</h1>
+        <p>Welcome, <span id="coderName"></span>!</p>
+    </header>
+    <div id="contentArea">
+        <!-- Dynamically filled based on URL parameter -->
+    </div>
+    <div id="buttonContainer">
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+<script>
+    if (!sessionStorage.getItem('loggedCoder')) {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    function checkEvaluationComplete() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const evaluationComplete = urlParams.get('evaluation_complete');
+        if (evaluationComplete === 'true') {
+            fetchResults();
+        } else {
+            const startButton = document.createElement('a');
+            startButton.href = "page2.php?comment_id=1&comment_text=Sample+Comment+1&coder_id=" + sessionStorage.getItem('loggedCoder');
+            startButton.className = 'link-button';
+            startButton.textContent = 'START RANKING';
+            document.getElementById('buttonContainer').appendChild(startButton);
+        }
+    }
+
+    function fetchResults() {
+        const coderId = sessionStorage.getItem('loggedCoder');
+        fetch('fetch_results.php?coder_id=' + coderId)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('contentArea').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading the results:', error));
+    }
+
+    window.onload = function() {
+        document.getElementById('coderName').textContent = sessionStorage.getItem('loggedCoder');
+        checkEvaluationComplete();
+    };
+</script>
+</body>
+</html>

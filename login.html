@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Coder Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="login-styles.css">
+</head>
+<body>
+<div class="login-container">
+    <div class="logo">
+        <i class="fas fa-dove"></i> <!-- Font Awesome bird icon -->
+    </div>
+    <h1>Coder Login</h1>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+<script>
+    const codersDB = {
+        'coder1': 'password1', 'coder2': 'password2', 'coder3': 'password3',
+        'coder4': 'password4', 'coder5': 'password5', 'coder6': 'password6',
+        'coder7': 'password7', 'coder8': 'password8', 'coder9': 'password9',
+        'coder10': 'password10'
+    };
+
+    document.getElementById('loginForm').onsubmit = function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (codersDB[username] && codersDB[username] === password) {
+            sessionStorage.setItem('loggedCoder', username);
+            window.location.href = 'index.html'; // Redirect to the main page
+        } else {
+            alert('Invalid username or password');
+        }
+    }
+</script>
+</body>
+</html>
